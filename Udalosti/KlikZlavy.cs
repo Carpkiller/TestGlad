@@ -10,7 +10,7 @@ namespace TestGlad.Udalosti
         {
             CasSimulacie = cas;
             wb = webBrowser;
-            TypAktivity = 3;
+            TypAktivity = TypAktivityEnum.Zlavy;
         }
 
         public override void Vykonaj()
@@ -20,7 +20,10 @@ namespace TestGlad.Udalosti
             {
                 if (htmlElement.InnerText == "Nové zľavy")
                 {
-                    htmlElement.InvokeMember("Click");
+                    //htmlElement.InvokeMember("Click");
+
+                    var position = ElementPostions.GetCoordinatesX(wb, htmlElement);
+                    MouseEvents.MouseClick(position.X, position.Y);
                 }
             }
         }

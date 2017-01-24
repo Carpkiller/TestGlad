@@ -9,7 +9,7 @@ namespace TestGlad.Udalosti
         {
             CasSimulacie = cas;
             wb = webBrowser;
-            TypAktivity = 1;
+            TypAktivity = TypAktivityEnum.Logo;
         }
 
         public override void Vykonaj()
@@ -19,7 +19,10 @@ namespace TestGlad.Udalosti
             {
                 if (htmlElement.GetAttribute("id") == "logo")
                 {
-                    htmlElement.InvokeMember("Click");
+                    //htmlElement.InvokeMember("Click");
+
+                    var position = ElementPostions.GetCoordinatesX(wb, htmlElement);
+                    MouseEvents.MouseClick(position.X, position.Y);
                 }
             }
         }

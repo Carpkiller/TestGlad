@@ -7,8 +7,13 @@ namespace TestGlad
     {
         public TimeSpan CasSimulacie { get; set; }
         protected WebBrowser wb;
-        public int TypAktivity { get; set; }
+        public TypAktivityEnum TypAktivity { get; set; }
 
         public abstract void Vykonaj();
+
+        public override string ToString()
+        {
+            return TypAktivity.ToString();
+        }
     }
 }

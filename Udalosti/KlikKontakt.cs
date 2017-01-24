@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace TestGlad.Udalosti
@@ -13,7 +9,7 @@ namespace TestGlad.Udalosti
         {
             CasSimulacie = cas;
             wb = webBrowser;
-            TypAktivity = 2;
+            TypAktivity = TypAktivityEnum.Kontakt;
         }
         public override void Vykonaj()
         {
@@ -22,7 +18,10 @@ namespace TestGlad.Udalosti
             {
                 if (htmlElement.InnerText == "Kontakt")
                 {
-                    htmlElement.InvokeMember("Click");
+                    //htmlElement.InvokeMember("Click");
+
+                    var position = ElementPostions.GetCoordinatesX(wb, htmlElement);
+                    MouseEvents.MouseClick(position.X, position.Y);
                 }
             }
         }

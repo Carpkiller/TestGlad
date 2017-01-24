@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TestGlad.Udalosti;
@@ -10,9 +9,11 @@ namespace TestGlad
 {
     public class Jadro
     {
-        public SortedList<TimeSpan, Udalost> listUdalosti { get; set; }
-        private WebBrowser _wb;
-        private TimeSpan SimCas;
+        public SortedList<TimeSpan, Udalost> KalendarUdalosti { get; set; }
+        public bool Naplanova { get; set; }
+
+        private readonly WebBrowser wb;
+        private TimeSpan simCas;
         public bool SimulaciaBezi;
 
         public delegate void ZmenaKalendarUdalostiHandler();
@@ -20,17 +21,20 @@ namespace TestGlad
 
         public Jadro(WebBrowser wb)
         {
-            listUdalosti = new SortedList<TimeSpan, Udalost>();
-            _wb = wb;
+            KalendarUdalosti = new SortedList<TimeSpan, Udalost>();
+            this.wb = wb;
             SimulaciaBezi = false;
         }
 
 
         public void SpustSimulaciu()
         {
-            SimCas = new TimeSpan(0,0,0,0,0);
-            var simCasUdalosti = SimCas + new TimeSpan(0, 0, 5);
-            listUdalosti.Add(simCasUdalosti, new KlikLogo(simCasUdalosti, _wb));
+            simCas = new TimeSpan(0,0,0,0,0);
+            KalendarUdalosti = new SortedList<TimeSpan, Udalost>();
+            Naplanova = true;
+
+            var simCasUdalosti = simCas + new TimeSpan(0, 0, 5);
+            KalendarUdalosti.Add(simCasUdalosti, new KlikLogo(simCasUdalosti, wb));
 
             SpustBehSimulacie();
 
@@ -44,13 +48,14 @@ namespace TestGlad
 
             while (SimulaciaBezi)
             {
-                Console.WriteLine(SimCas);
-                if (SimCas.Equals(listUdalosti.First().Value.CasSimulacie))
+                Console.WriteLine(simCas + "  --  " + KalendarUdalosti.Values.Count);
+                if (simCas.Equals(KalendarUdalosti.First().Value.CasSimulacie))
                 {
-                    listUdalosti.First().Value.Vykonaj();
+                    KalendarUdalosti.First().Value.Vykonaj();
+                    Naplanova = true;
                 }
 
-                SimCas = SimCas.Add(new TimeSpan(0,0,0,0,100));
+                simCas = simCas.Add(new TimeSpan(0,0,0,0,100));
                 await PutTaskDelay();
             }
 
@@ -64,21 +69,25 @@ namespace TestGlad
 
         public void NaplanujDalsiuAktivitu()
         {
-            var predchAktivita = listUdalosti.First().Value.TypAktivity;
-            listUdalosti.RemoveAt(0);
+            var predchAktivita = KalendarUdalosti.First().Value.TypAktivity;
+            KalendarUdalosti.RemoveAt(0);
 
             switch (predchAktivita)
             {
-                case 1:
+                case TypAktivityEnum.Logo:
                     NasledujucaPoKlikLogo();
                     break;
-                case 2:
+                case TypAktivityEnum.Kontakt:
                     NasledujucaPoKlikKontakt();
                     break;
-                case 3:
+                case TypAktivityEnum.Zlavy:
                     NasledujucaPoKlikZlavy();
                     break;
+                case TypAktivityEnum.Refresh:
+                    break;
             }
+
+            Naplanova = false;
 
             if (ZmenaKalendarUdalosti != null) //vyvolani udalosti
                 ZmenaKalendarUdalosti();
@@ -86,20 +95,23 @@ namespace TestGlad
 
         private void NasledujucaPoKlikZlavy()
         {
-            var simCasUdalosti = SimCas + new TimeSpan(0, 0, 5);
-            listUdalosti.Add(simCasUdalosti, new KlikKontakt(simCasUdalosti, _wb));
+            var simCasUdalosti = simCas + new TimeSpan(0, 0, 5);
+            KalendarUdalosti.Add(simCasUdalosti, new KlikKontakt(simCasUdalosti, wb));
         }
 
         private void NasledujucaPoKlikLogo()
         {
-            var simCasUdalosti = SimCas + new TimeSpan(0, 0, 10);
-            listUdalosti.Add(simCasUdalosti, new KlikZlavy(simCasUdalosti, _wb));
+            var simCasUdalosti = simCas + new TimeSpan(0, 0, 25);
+            KalendarUdalosti.Add(simCasUdalosti, new KlikZlavy(simCasUdalosti, wb));
+
+            simCasUdalosti = simCas + new TimeSpan(0, 0, 5);
+            KalendarUdalosti.Add(simCasUdalosti, new RefreshStranky(simCasUdalosti, wb));
         }
 
         private void NasledujucaPoKlikKontakt()
         {
-            var simCasUdalosti = SimCas + new TimeSpan(0, 0, 5);
-            listUdalosti.Add(simCasUdalosti, new KlikLogo(simCasUdalosti, _wb));
+            var simCasUdalosti = simCas + new TimeSpan(0, 0, 5);
+            KalendarUdalosti.Add(simCasUdalosti, new KlikLogo(simCasUdalosti, wb));
         }
     }
 

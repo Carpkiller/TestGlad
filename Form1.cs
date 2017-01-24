@@ -5,7 +5,7 @@ namespace TestGlad
 {
     public partial class Form1 : Form
     {
-        private Jadro _jadro;
+        private readonly Jadro _jadro;
         public Form1()
         {
             InitializeComponent();
@@ -17,9 +17,9 @@ namespace TestGlad
         {
             textBox1.Text = "";
 
-            foreach (var udalost in _jadro.listUdalosti.Values)
+            foreach (var udalost in _jadro.KalendarUdalosti.Values)
             {
-                textBox1.AppendText(string.Format("{0} - {1} - {2}", udalost.CasSimulacie, udalost.TypAktivity, udalost.GetType()));
+                textBox1.AppendText(string.Format("{0} - {1}{2}", udalost.CasSimulacie, udalost.TypAktivity, Environment.NewLine));
             }
         }
 
@@ -30,10 +30,15 @@ namespace TestGlad
 
         private void webBrowser1_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
-            if (_jadro.SimulaciaBezi)
+            if (_jadro.SimulaciaBezi && _jadro.Naplanova)
             {
                 _jadro.NaplanujDalsiuAktivitu();
             }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            _jadro.SimulaciaBezi = false;
         }
     }
 }
