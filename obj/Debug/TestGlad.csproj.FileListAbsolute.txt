@@ -1,0 +1,9 @@
+C:\Projects\WindowsHttpNacuvac\TestGlad\TestGlad\bin\Debug\TestGlad.exe.config
+C:\Projects\WindowsHttpNacuvac\TestGlad\TestGlad\bin\Debug\TestGlad.exe
+C:\Projects\WindowsHttpNacuvac\TestGlad\TestGlad\bin\Debug\TestGlad.pdb
+C:\Projects\WindowsHttpNacuvac\TestGlad\TestGlad\obj\Debug\TestGlad.csprojResolveAssemblyReference.cache
+C:\Projects\WindowsHttpNacuvac\TestGlad\TestGlad\obj\Debug\TestGlad.Form1.resources
+C:\Projects\WindowsHttpNacuvac\TestGlad\TestGlad\obj\Debug\TestGlad.Properties.Resources.resources
+C:\Projects\WindowsHttpNacuvac\TestGlad\TestGlad\obj\Debug\TestGlad.csproj.GenerateResource.Cache
+C:\Projects\WindowsHttpNacuvac\TestGlad\TestGlad\obj\Debug\TestGlad.exe
+C:\Projects\WindowsHttpNacuvac\TestGlad\TestGlad\obj\Debug\TestGlad.pdb
